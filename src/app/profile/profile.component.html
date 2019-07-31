@@ -1,81 +1,102 @@
 <div class="bs-example">
-  <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <a href="#" class="navbar-brand text-capitalize">Hi {{Username}}</a>
-      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-          <span class="navbar-toggler-icon"></span>
-      </button>
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a href="#" class="navbar-brand text-capitalize">Hi {{Username}}</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-          <div class="navbar-nav">
-              <!-- <a routerLink="/home/{{userName}}" class="nav-item nav-link active">Home</a> -->
-              <a routerLink="/profile" class="nav-item nav-link active">Profile</a>
-              <a href="#" class="nav-item nav-link">Messages</a>
-              <a href="#" class="nav-item nav-link disabled" tabindex="-1">Reports</a>
-          </div>
-          <div class="navbar-nav ml-auto">
-              <a href="#" class="nav-item nav-link">LogOut</a>
-          </div>
-      </div>
-  </nav>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav">
+                <!-- <a routerLink="/home/{{userName}}" class="nav-item nav-link active">Home</a> -->
+                <a routerLink="/home/{{userId}}" class="nav-item nav-link">Home</a>
+                <a routerLink="/profile" class="nav-item nav-link active">Profile</a>
+                <a href="#" class="nav-item nav-link">Messages</a>
+                <a href="#" class="nav-item nav-link disabled" tabindex="-1">Reports</a>
+            </div>
+            <div class="navbar-nav ml-auto">
+                <a href="#" class="nav-item nav-link">LogOut</a>
+            </div>
+        </div>
+    </nav>
 </div>
 
 
 
-<form>
-    <div class="form-row">
-      <div class="col-md-4 mb-3">
-        <label for="validationServer01">First name</label>
-        <input type="text" class="form-control {{firstNameVaild}}" id="validationServer01" placeholder="First name" [(ngModel)]="firstName" [(ngModel)]="firstName" [ngModelOptions]="{standalone:true}" required>
-        <!-- <div class="valid-feedback">  Looks good! </div> -->
-      </div>
-      <div class="col-md-4 mb-3">
-        <label for="validationServer02">Last name</label>
-        <input type="text" class="form-control {{lastNameVaild}}" id="validationServer02" placeholder="Last name" [(ngModel)]="lastName" [ngModelOptions]="{standalone:true}" required>
-      </div>
-      <div class="col-md-4 mb-3">
-        <label for="validationServerUsername">Username</label>
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroupPrepend3">@</span>
-          </div>
-          <input type="text" class="form-control {{UsernameVaild}}" [(ngModel)]="Username" [ngModelOptions]="{standalone:true}" 
-                id="validationServerUsername" placeholder="Username" aria-describedby="inputGroupPrepend3" required>
+<form (ngSubmit)="onSubmit()">
+    
+        <div class="d-flex justify-content-center">
+            <label class="hoverable" for="fileInput">
+                <img class="img-circle box-shad"
+                    [src]="url ? url : 'https://cdn4.iconfinder.com/data/icons/social-messaging-ui-color-and-shapes-3/177800/129-512.png'">
+                <div class="hover-text">Choose file</div>
+                <div class="background"></div>
+            </label>
         </div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="col-md-6 mb-3">
-        <label for="validationServer03">City</label>
-        <input type="text" class="form-control is-invalid" id="validationServer03" placeholder="City" [(ngModel)]="City" [ngModelOptions]="{standalone:true}" required>
-        <!-- <div class="invalid-feedback">
-          Please provide a valid city.
-        </div> -->
-      </div>
-      <div class="col-md-3 mb-3">
-        <label for="validationServer04">State</label>
-        <input type="text" class="form-control is-invalid" id="validationServer04" [(ngModel)]="City" [ngModelOptions]="{standalone:true}" placeholder="State" required>
-        <!-- <div class="invalid-feedback">
-          Please provide a valid state.
-        </div> -->
-      </div>
-      <div class="col-md-3 mb-3">
-        <label for="validationServer05">Zip</label>
-        <input type="text" class="form-control is-invalid" id="validationServer05" [(ngModel)]="City" [ngModelOptions]="{standalone:true}" placeholder="Zip" required>
-        <!-- <div class="invalid-feedback">
-          Please provide a valid zip.
-        </div> -->
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="form-check">
-        <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" required>
-        <label class="form-check-label" for="invalidCheck3">
-          Agree to terms and conditions
-        </label>
-        <!-- <div class="invalid-feedback">
-          You must agree before submitting.
-        </div> -->
-      </div>
-    </div>
-    <button class="btn btn-primary" type="submit">Submit form</button>
-  </form>
+        <div class="d-flex justify-content-center">
+            <input id="fileInput" type='file' (change)="onSelectFile($event)">
+            <button class="mt-auto p-2 bd-highlight btn btn-link" style="color: red;" *ngIf="url"
+                (click)="delete()">delete</button>
+        </div>
+        <div class="form-row">
+            <div class="col-md-4 mb-3">
+                <label for="validationServer01">First name</label>
+                <input type="text" class="form-control {{firstNameVaild}}" id="validationServer01" placeholder="First name"
+                    [(ngModel)]="firstName" [ngModelOptions]="{standalone:true}" (change)="firstNameChanged()" required>
+                <!-- <div class="valid-feedback">  Looks good! </div> -->
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationServer02">Last name</label>
+                <input type="text" class="form-control {{lastNameVaild}}" id="validationServer02" placeholder="Last name"
+                    [(ngModel)]="lastName" [ngModelOptions]="{standalone:true}" (change)="lastNameChanged()" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="validationServerUsername">Username</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupPrepend3">@</span>
+                    </div>
+                    <input type="text" class="form-control {{UsernameVaild}}" [(ngModel)]="Username"
+                        [ngModelOptions]="{standalone:true}" id="validationServerUsername" placeholder="Username"
+                        aria-describedby="inputGroupPrepend3" required>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="validationServer03">City</label>
+                <input type="text" class="form-control {{CityVaild}}" id="validationServer03" placeholder="City"
+                    (change)="CityChanged()" [(ngModel)]="City" [ngModelOptions]="{standalone:true}" required>
+                <!-- <div class="invalid-feedback">
+            Please provide a valid city.
+            </div> -->
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="validationServer04">State</label>
+                <input type="text" class="form-control {{StateVaild}}" id="validationServer04" (change)="StateChanged()"
+                    [(ngModel)]="State" [ngModelOptions]="{standalone:true}" placeholder="State" required>
+                <!-- <div class="invalid-feedback">
+            Please provide a valid state.
+            </div> -->
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="validationServer05">Zip</label>
+                <input type="text" class="form-control {{ZipVaild}}" id="validationServer05" (change)="ZipChanged()"
+                    [(ngModel)]="Zip" [ngModelOptions]="{standalone:true}" placeholder="Zip" required>
+                <!-- <div class="invalid-feedback">
+            Please provide a valid zip.
+            </div> -->
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-check">
+                <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" required>
+                <label class="form-check-label" for="invalidCheck3">
+                    Agree to terms and conditions
+                </label>
+                <!-- <div class="invalid-feedback">
+            You must agree before submitting.
+            </div> -->
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit form</button>
+</form>
